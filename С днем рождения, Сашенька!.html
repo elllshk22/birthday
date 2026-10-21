@@ -2,10 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>С Днём Рождения, дорогая моя подруга! 💛</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
   body {
     font-family: 'Georgia', serif;
     background: linear-gradient(135deg, #fdf6f0 0%, #f9e4e8 50%, #e8e4f3 100%);
@@ -14,59 +15,63 @@
     flex-direction: column;
     align-items: center;
     padding: 40px 20px;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom)); /* Учет нижней панели iPhone */
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
+
   h1 {
     font-size: 2em;
     color: #b56576;
     text-align: center;
     margin-bottom: 10px;
+    line-height: 1.2;
   }
   .subtitle {
     color: #6d597a;
     font-style: italic;
     margin-bottom: 30px;
     text-align: center;
+    font-size: 1.1em;
   }
+
+  /* Конверты */
   .envelopes {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    max-width: 900px;
+    gap: 15px;
+    max-width: 800px;
+    width: 100%;
   }
   .envelope {
-    width: 220px;
+    width: 90px;
+    height: 90px;
     background: #fff;
     border-radius: 16px;
-    padding: 24px 18px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(181, 101, 118, 0.15);
     transition: transform 0.3s, box-shadow 0.3s;
     border: 2px dashed #e0b1b8;
-    position: relative;
   }
-  .envelope:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 12px 30px rgba(181, 101, 118, 0.3);
-  }
-  .envelope .icon { font-size: 2.2em; margin-bottom: 10px; }
-  .envelope .label {
-    font-size: 0.95em;
-    color: #6d597a;
-    line-height: 1.4;
-  }
-  .envelope.opened { border-color: #b56576; background: #fff8f9; }
+  .envelope:hover { transform: translateY(-6px) scale(1.05); }
+  .envelope:active { transform: scale(0.95); } /* Эффект нажатия на телефоне */
+  .envelope .icon { font-size: 2.5em; transition: transform 0.3s ease; }
+  .envelope.opened { border-color: #b56576; background: #fff8f9; border-style: solid; }
   .envelope.opened .icon { animation: pop 0.5s ease; }
   @keyframes pop { 0% { transform: scale(0.5); } 70% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
+  /* Блок с текстом */
   .message-box {
     max-width: 600px;
+    width: 100%;
     margin-top: 30px;
     background: #fff;
     border-radius: 20px;
-    padding: 30px;
+    padding: 25px;
     box-shadow: 0 10px 30px rgba(109, 89, 122, 0.2);
     font-size: 1.1em;
     color: #4a4a4a;
@@ -77,22 +82,26 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .message-box.show { display: block; }
 
-  /* Стили для фото внутри конвертов */
+  /* Фото внутри конвертов */
   .message-box img {
     width: 100%;
-    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
     border-radius: 12px;
-    margin-top: 15px;
+    margin-top: 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     display: block;
+    background: #fdf6f0;
   }
 
+  /* Финальный блок */
   .final {
     max-width: 650px;
+    width: 100%;
     margin-top: 40px;
     background: linear-gradient(135deg, #fff, #fdf0f3);
     border-radius: 24px;
-    padding: 35px;
+    padding: 30px 20px;
     text-align: center;
     box-shadow: 0 12px 40px rgba(181, 101, 118, 0.25);
     display: none;
@@ -101,26 +110,32 @@
   }
   .final.show { display: block; }
   .final h2 { color: #b56576; margin-bottom: 20px; font-size: 1.6em; }
-  .final p { color: #4a4a4a; line-height: 1.8; margin-bottom: 14px; font-size: 1.08em; }
+  .final p { color: #4a4a4a; line-height: 1.7; margin-bottom: 14px; font-size: 1.05em; }
   .final .signature { margin-top: 20px; font-style: italic; color: #6d597a; }
 
-  /* Галерея в финале */
+  /* Галерея */
   .gallery {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
     margin: 25px 0;
+  }
+  .gallery-item {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: #fdf6f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .gallery img {
     width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    height: 100%;
+    object-fit: contain;
     transition: transform 0.3s ease;
-  }
-  .gallery img:hover {
-    transform: scale(1.05);
   }
 
   #confetti-canvas {
@@ -129,34 +144,77 @@
     pointer-events: none;
     z-index: 999;
   }
+
+  /* ========================================= */
+  /* МОБИЛЬНАЯ ВЕРСИЯ (для экранов до 600px) */
+  /* ========================================= */
+  @media (max-width: 600px) {
+    body {
+      padding: 20px 12px;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+    h1 {
+      font-size: 1.6em; /* Чуть меньше заголовок */
+    }
+    .subtitle {
+      font-size: 0.95em;
+      margin-bottom: 20px;
+    }
+    .envelopes {
+      gap: 10px; /* Плотнее друг к другу */
+    }
+    .envelope {
+      width: 70px; /* Удобный размер для пальца */
+      height: 70px;
+      border-radius: 12px;
+    }
+    .envelope .icon {
+      font-size: 2em;
+    }
+    .message-box {
+      padding: 20px 15px;
+      font-size: 1em; /* Читабельный текст */
+      margin-top: 20px;
+      border-radius: 16px;
+    }
+    .message-box img {
+      margin-top: 15px;
+      max-height: 350px;
+    }
+    .final {
+      padding: 25px 15px;
+      margin-top: 25px;
+      border-radius: 20px;
+    }
+    .final h2 {
+      font-size: 1.4em;
+    }
+    .final p {
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+    .gallery {
+      grid-template-columns: repeat(2, 1fr); /* На телефоне 2 колонки */
+      gap: 8px;
+      margin: 20px 0;
+    }
+    .gallery-item {
+      border-radius: 10px;
+    }
+  }
 </style>
 </head>
 <body>
 
 <h1>С Днём Рождения, дорогая моя подруга! 🎉</h1>
-<p class="subtitle">Открой все конверты — они про тебя, про нас и про то, что впереди 💌</p>
+<p class="subtitle">Нажми на каждый конвертик 💌</p>
 
 <div class="envelopes">
-  <div class="envelope" data-id="0">
-    <div class="icon">💌</div>
-    <div class="label">Главное пожелание<br><small>(не откладывай жизнь)</small></div>
-  </div>
-  <div class="envelope" data-id="1">
-    <div class="icon">📮</div>
-    <div class="label">61% твоей жизни<br><small>(14 лет дружбы)</small></div>
-  </div>
-  <div class="envelope" data-id="2">
-    <div class="icon">💐</div>
-    <div class="label">Девичник и замуж<br><small>(не за африканца)</small></div>
-  </div>
-  <div class="envelope" data-id="3">
-    <div class="icon">🏡</div>
-    <div class="label">Твои успехи<br><small>(работа, любовь, квартира)</small></div>
-  </div>
-  <div class="envelope" data-id="4">
-    <div class="icon">💕</div>
-    <div class="label">Про нашу дружбу<br><small>(Москва — Казань)</small></div>
-  </div>
+  <div class="envelope" data-id="0"><div class="icon">💌</div></div>
+  <div class="envelope" data-id="1"><div class="icon">💖</div></div>
+  <div class="envelope" data-id="2"><div class="icon">🎀</div></div>
+  <div class="envelope" data-id="3"><div class="icon">✨</div></div>
+  <div class="envelope" data-id="4"><div class="icon">💍</div></div>
 </div>
 
 <div class="message-box" id="msgBox"></div>
@@ -164,18 +222,17 @@
 <div class="final" id="finalBox">
   <h2>Дорогая моя подруга! 💛</h2>
   
-  <!-- ГАЛЕРЕЯ В ФИНАЛЕ (10 фото) -->
   <div class="gallery">
-    <img src="1.JPG" alt="Наше фото 1">
-    <img src="2.JPG" alt="Наше фото 2">
-    <img src="3.JPG" alt="Наше фото 3">
-    <img src="4.HEIC" alt="Наше фото 4">
-    <img src="5.JPG" alt="Наше фото 5">
-    <img src="6.HEIC" alt="Наше фото 6">
-    <img src="7.HEIC" alt="Наше фото 7">
-    <img src="8.HEIC" alt="Наше фото 8">
-    <img src="9.HEIC" alt="Наше фото 9">
-    <img src="10.HEIC" alt="Наше фото 10">
+    <div class="gallery-item"><img src="1.JPG" alt="Фото 1"></div>
+    <div class="gallery-item"><img src="2.JPG" alt="Фото 2"></div>
+    <div class="gallery-item"><img src="3.JPG" alt="Фото 3"></div>
+    <div class="gallery-item"><img src="4.HEIC" alt="Фото 4"></div>
+    <div class="gallery-item"><img src="5.JPG" alt="Фото 5"></div>
+    <div class="gallery-item"><img src="6.HEIC" alt="Фото 6"></div>
+    <div class="gallery-item"><img src="7.HEIC" alt="Фото 7"></div>
+    <div class="gallery-item"><img src="8.HEIC" alt="Фото 8"></div>
+    <div class="gallery-item"><img src="9.HEIC" alt="Фото 9"></div>
+    <div class="gallery-item"><img src="10.HEIC" alt="Фото 10"></div>
   </div>
 
   <p>От всей души поздравляю тебя С Днём Рождения!</p>
@@ -188,23 +245,15 @@
 <canvas id="confetti-canvas"></canvas>
 
 <script>
-// ТЕКСТЫ И ФОТО ДЛЯ КОНВЕРТОВ
-// Я распределил фото: 1, 2, 3, 4 и 5 — в конверты (по одному), а остальные ушли в галерею.
-// Если хочешь поменять фото в конверте — просто измени имя файла в src.
 const messages = [
-  // Конверт 0 — Главное пожелание (Фото 1)
   "💌 <strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.<br><br>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.<br><br><strong>Береги себя</strong> — не только когда трудно, а всегда. Отдыхай без чувства вины, говори «нет» без объяснений, выбирай себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.<img src='1.JPG' alt='Фото'>",
 
-  // Конверт 1 — 61% жизни (Фото 2)
   "📮 Удивительно, но <strong>61% твоей жизни</strong> составляет наша дружба, которую мы пронесли сквозь расстояния, часовые пояса и целые эпохи жизни. Мы с тобой прошли столько, что иногда кажется, будто мы знакомы не одну жизнь.<br><br>И я хочу сказать, что <strong>ты — один из самых важных людей в моей жизни</strong>. С тобой я не боюсь несмешно пошутить, могу молчать и не чувствовать неловкости, смеяться до слёз над дровами из кошек, и быть настоящей и слабой, не боясь, что это заметят. Это дорогого стоит.<img src='2.JPG' alt='Фото'>",
 
-  // Конверт 2 — Девичник и замуж (Фото 3)
   "💐 Кто бы мог подумать тогда, <strong>14 лет назад</strong>, что я буду устраивать тебе девичник и мы будем выдавать тебя замуж не за африканца Александра? 😄<br><br>Честно говоря, я очень рада за тебя и твои успехи. Рада, что ты встретила своего человечка и находишься в счастливых и гармоничных отношениях, а теперь ещё и выходишь замуж 🥹🥹🥹 <strong>Счастья вам с Тимуром!</strong><img src='3.JPG' alt='Фото'>",
 
-  // Конверт 3 — Успехи (Фото 4)
   "🏡 Рада, что ты нашла <strong>работу по душе</strong>, которая не только приносит деньги, но ещё и удовольствие!<br><br>Рада, что тебя окружают такие замечательные подруги, готовые поддержать в трудную минуту, рассмешить до слёз, вписаться в любую авантюру, а главное — просто быть рядом.<br><br>И рада, что ты в 22 года <strong>САМА купила себе квартиру</strong> (без мам, пап и почти без ипотек) — это тебе не хухры мухры!! Я очень тобой горжусь!<img src='4.HEIC' alt='Фото'>",
 
-  // Конверт 4 — Про дружбу (Фото 5)
   "💕 Я очень ценю нашу дружбу — за то, что она выдерживает и расстояния, и молчание, и разные периоды жизни.<br><br><strong>Спасибо, что ты есть!</strong> Помни, что я всегда на связи — между Москвой и Казанью дружба не заканчивается, она становится крепче.<img src='5.JPG' alt='Фото'>"
 ];
 
@@ -220,12 +269,18 @@ envelopes.forEach(env => {
     opened.add(id);
     msgBox.innerHTML = messages[id];
     msgBox.classList.add('show');
-    msgBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    // Плавный скролл к тексту с небольшой задержкой (для мобилок)
+    setTimeout(() => {
+      msgBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 
     if (opened.size === envelopes.length) {
       setTimeout(() => {
         finalBox.classList.add('show');
-        finalBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+          finalBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
         startConfetti();
       }, 600);
     }
