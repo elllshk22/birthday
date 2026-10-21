@@ -33,7 +33,7 @@
   }
   .bg-heart {
     position: absolute;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 20px;
     animation: floatUp linear infinite;
     bottom: -50px;
@@ -111,12 +111,10 @@
     position: relative;
     border: 1px solid #f0d3d8;
     background: linear-gradient(135deg, #fff 50%, #fdf6f0 50%);
-    /* Анимация появления и покачивания */
     opacity: 0;
     animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, swing 4s ease-in-out infinite alternate;
   }
   
-  /* Задержка появления для каждого конверта (каскад) */
   .envelope:nth-child(1) { animation-delay: 0.6s, 2s; }
   .envelope:nth-child(2) { animation-delay: 0.8s, 2.2s; }
   .envelope:nth-child(3) { animation-delay: 1.0s, 2.4s; }
@@ -194,7 +192,6 @@
     100% { opacity: 1; transform: perspective(600px) rotateX(0deg) scale(1); }
   }
 
-  /* Текст в конверте с плавным появлением */
   .message-content {
     animation: fadeInText 1.5s ease forwards;
   }
@@ -214,7 +211,6 @@
     background: #f9f9f9;
     padding: 12px 12px 40px 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    /* Анимация выезда и покачивания */
     opacity: 0;
     animation: slideInPhoto 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards, floatPhoto 5s ease-in-out infinite;
   }
@@ -281,7 +277,7 @@
     animation: fadeInText 1s ease forwards;
     opacity: 0;
   }
-  /* Задержки появления для каждого абзаца */
+  
   .final p:nth-of-type(1) { animation-delay: 0.8s; }
   .final p:nth-of-type(2) { animation-delay: 1.2s; }
   .final p:nth-of-type(3) { animation-delay: 1.6s; }
@@ -314,11 +310,9 @@
     position: relative;
     cursor: pointer;
     opacity: 0;
-    /* Появление и легкое покачивание */
     animation: galleryPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, gentleSway 6s ease-in-out infinite alternate;
   }
   
-  /* Задержки для фото в галерее */
   .gallery-item:nth-child(1) { animation-delay: 1.5s, 3s; transform: rotate(-1.5deg); }
   .gallery-item:nth-child(2) { animation-delay: 1.7s, 3.2s; transform: rotate(1.5deg); }
   .gallery-item:nth-child(3) { animation-delay: 1.9s, 3.4s; transform: rotate(-1deg); }
@@ -391,7 +385,6 @@
 </head>
 <body>
 
-<!-- Анимированный фон с летающими сердечками -->
 <div class="bg-animation" id="bgAnimation"></div>
 
 <div class="content">
@@ -412,7 +405,6 @@
     <h2>Сашенька, с днём рождения! 💛</h2>
     
     <div class="gallery">
-      <!-- Замени .JPG на .JPG, если сконвертируешь -->
       <div class="gallery-item"><img src="1.JPG" alt="Фото 1"></div>
       <div class="gallery-item"><img src="2.JPG" alt="Фото 2"></div>
       <div class="gallery-item"><img src="3.JPG" alt="Фото 3"></div>
@@ -425,8 +417,9 @@
       <div class="gallery-item"><img src="10.JPG" alt="Фото 10"></div>
     </div>
 
-    <p>От всей души поздравляю тебя С Днём Рождения!</p>
-    <p><strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом (когда закроешь ипотеку, когда Тимур вернётся с вахты, когда рак на горе свистнет) — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.</p>
+    <!-- ИСПРАВЛЕНО: Убрано дублирование первого текста -->
+    <p><strong>Ну вот ты и открыла все конверты!</strong> 💛</p>
+    <p>Я очень надеюсь, что этот год принесёт тебе столько же радости, сколько ты приносишь мне. А теперь — самое главное:</p>
     <p>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.</p>
     <p><strong>Желаю тебе беречь себя</strong> — не только когда трудно, а всегда. Отдыхать без чувства вины, говорить «нет» без объяснений, выбирать себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.</p>
     
@@ -451,7 +444,7 @@ for (let i = 0; i < 25; i++) {
   bgContainer.appendChild(heart);
 }
 
-// === ТЕКСТЫ ДЛЯ КОНВЕРТОВ ===
+// === ТЕКСТЫ ДЛЯ КОНВЕРТОВ (ВСЕ .JPG) ===
 const messages = [
   "<div class='message-content'>💌 <strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.<br><br>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.<br><br><strong>Береги себя</strong> — не только когда трудно, а всегда. Отдыхай без чувства вины, говори «нет» без объяснений, выбирай себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.<img src='1.JPG' alt='Фото'></div>",
 
@@ -475,7 +468,6 @@ envelopes.forEach(env => {
     env.classList.add('opened');
     opened.add(id);
     
-    // Легкая вибрация при нажатии (если поддерживается телефоном)
     if (navigator.vibrate) navigator.vibrate(50);
     
     msgBox.innerHTML = messages[id];
@@ -486,13 +478,14 @@ envelopes.forEach(env => {
     }, 100);
 
     if (opened.size === envelopes.length) {
+      // ЖДЕМ 5 СЕКУНД ПЕРЕД ФИНАЛОМ
       setTimeout(() => {
         finalBox.classList.add('show');
         setTimeout(() => {
           finalBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
         startConfetti();
-      }, 5000);
+      }, 5000); // <--- ТЕ САМЫЕ 5 СЕКУНД
     }
   });
 });
@@ -528,7 +521,7 @@ function startConfetti() {
       rot: Math.random() * Math.PI,
       vr: (-0.1 + Math.random() * 0.2),
       life: 0,
-      shape: Math.random() > 0.5 ? 'rect' : 'circle' // Смешиваем формы
+      shape: Math.random() > 0.5 ? 'rect' : 'circle'
     });
   }
   animate();
@@ -544,8 +537,6 @@ function animate() {
     p.rot += p.vr;
     p.life++;
     p.vy += 0.02;
-    
-    // Немного колышем по горизонтали (эффект падения листьев)
     p.x += Math.sin(p.life * 0.05) * 0.5;
 
     if (p.y < canvas.height + 50) alive = true;
