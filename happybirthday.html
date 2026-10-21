@@ -5,139 +5,266 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>С Днём Рождения, дорогая моя подруга! 💛</title>
 <style>
+  /* === БАЗОВЫЕ СТИЛИ И ШРИФТЫ === */
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   
   body {
     font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #fdf6f0 0%, #f9e4e8 50%, #e8e4f3 100%);
+    background: #fdf6f0;
+    /* Красивый переливающийся фон */
+    background: linear-gradient(135deg, #fdf6f0 0%, #f9e4e8 40%, #e8e4f3 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40px 20px;
-    padding-bottom: calc(40px + env(safe-area-inset-bottom)); /* Учет нижней панели iPhone */
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    position: relative;
   }
 
+  /* === МАГИЯ: ЛЕТАЮЩИЕ ИСКРЫ НА ФОНЕ === */
+  .sparkles {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background-image: 
+      radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px),
+      radial-gradient(circle, rgba(255,255,255,0.6) 1.5px, transparent 1.5px);
+    background-size: 100px 100px, 150px 150px;
+    background-position: 0 0, 50px 50px;
+    animation: twinkle 4s infinite alternate;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.05); }
+  }
+
+  /* Контент поверх искр */
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  /* === ЗАГОЛОВКИ === */
   h1 {
-    font-size: 2em;
+    font-size: 2.2em;
     color: #b56576;
     text-align: center;
     margin-bottom: 10px;
     line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
   }
   .subtitle {
     color: #6d597a;
     font-style: italic;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
   }
 
-  /* Конверты */
+  /* === КОНВЕРТЫ (ВЫГЛЯДЯТ КАК НАСТОЯЩИЕ) === */
   .envelopes {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    max-width: 800px;
+    gap: 20px;
     width: 100%;
+    margin-bottom: 20px;
   }
   .envelope {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 80px;
     background: #fff;
-    border-radius: 16px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(181, 101, 118, 0.15);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 2px dashed #e0b1b8;
+    box-shadow: 0 10px 20px rgba(181, 101, 118, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    border: 1px solid #f0d3d8;
+    /* Имитация клапана конверта */
+    background: linear-gradient(135deg, #fff 50%, #fdf6f0 50%);
   }
-  .envelope:hover { transform: translateY(-6px) scale(1.05); }
-  .envelope:active { transform: scale(0.95); } /* Эффект нажатия на телефоне */
-  .envelope .icon { font-size: 2.5em; transition: transform 0.3s ease; }
-  .envelope.opened { border-color: #b56576; background: #fff8f9; border-style: solid; }
-  .envelope.opened .icon { animation: pop 0.5s ease; }
+  .envelope::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    border-left: 50px solid transparent;
+    border-right: 50px solid transparent;
+    border-top: 40px solid #fcf9f9;
+    border-radius: 8px 8px 0 0;
+    transition: all 0.4s;
+  }
+  .envelope:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(181, 101, 118, 0.3);
+  }
+  .envelope:active { transform: scale(0.95); }
+  
+  /* Иконка-печать внутри конверта */
+  .envelope .icon { 
+    font-size: 2em; 
+    z-index: 2; 
+    position: relative;
+    margin-top: 15px; /* Сдвигаем вниз к центру конверта */
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+  }
+  .envelope.opened { 
+    background: #fff8f9;
+    border-color: #b56576; 
+  }
+  .envelope.opened::before {
+    transform: rotateX(180deg); /* Открываем клапан */
+    opacity: 0.5;
+  }
+  .envelope.opened .icon { animation: pop 0.6s ease; }
   @keyframes pop { 0% { transform: scale(0.5); } 70% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
-  /* Блок с текстом */
+  /* === БЛОК С ТЕКСТОМ === */
   .message-box {
-    max-width: 600px;
     width: 100%;
-    margin-top: 30px;
     background: #fff;
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 10px 30px rgba(109, 89, 122, 0.2);
-    font-size: 1.1em;
-    color: #4a4a4a;
-    line-height: 1.7;
-    display: none;
-    animation: fadeIn 0.5s ease;
-  }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .message-box.show { display: block; }
-
-  /* Фото внутри конвертов */
-  .message-box img {
-    width: 100%;
-    max-height: 500px;
-    object-fit: contain;
-    border-radius: 12px;
-    margin-top: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    display: block;
-    background: #fdf6f0;
-  }
-
-  /* Финальный блок */
-  .final {
-    max-width: 650px;
-    width: 100%;
-    margin-top: 40px;
-    background: linear-gradient(135deg, #fff, #fdf0f3);
     border-radius: 24px;
-    padding: 30px 20px;
-    text-align: center;
-    box-shadow: 0 12px 40px rgba(181, 101, 118, 0.25);
+    padding: 35px;
+    box-shadow: 0 15px 35px rgba(109, 89, 122, 0.15);
+    font-size: 1.15em;
+    color: #4a4a4a;
+    line-height: 1.8;
     display: none;
-    animation: fadeIn 0.8s ease;
+    margin-top: 10px;
     border: 1px solid #f0d3d8;
   }
-  .final.show { display: block; }
-  .final h2 { color: #b56576; margin-bottom: 20px; font-size: 1.6em; }
-  .final p { color: #4a4a4a; line-height: 1.7; margin-bottom: 14px; font-size: 1.05em; }
-  .final .signature { margin-top: 20px; font-style: italic; color: #6d597a; }
+  .message-box.show { 
+    display: block; 
+    animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes slideUp { 
+    from { opacity: 0; transform: translateY(30px); } 
+    to { opacity: 1; transform: translateY(0); } 
+  }
 
-  /* Галерея */
+  /* === ФОТО ВНУТРИ КОНВЕРТОВ (КАК ПОЛАРОИД) === */
+  .message-box img {
+    width: 100%;
+    max-height: 450px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin: 25px auto 10px;
+    display: block;
+    background: #f9f9f9;
+    padding: 12px 12px 40px 12px; /* Белая рамка снизу, как у полароида */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transform: rotate(-2deg); /* Легкий наклон для стиля */
+    transition: transform 0.3s;
+  }
+  .message-box img:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  /* === ФИНАЛЬНЫЙ БЛОК === */
+  .final {
+    width: 100%;
+    margin-top: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(181, 101, 118, 0.2);
+    display: none;
+    border: 2px solid #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Красивая полоска сверху финального блока */
+  .final::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 6px;
+    background: linear-gradient(90deg, #b56576, #e8e4f3, #b56576);
+  }
+  .final.show { 
+    display: block; 
+    animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes zoomIn { 
+    from { opacity: 0; transform: scale(0.9); } 
+    to { opacity: 1; transform: scale(1); } 
+  }
+  
+  .final h2 { 
+    color: #b56576; 
+    margin-bottom: 25px; 
+    font-size: 1.8em; 
+    letter-spacing: 1px;
+  }
+  .final p { 
+    color: #4a4a4a; 
+    line-height: 1.9; 
+    margin-bottom: 16px; 
+    font-size: 1.1em; 
+    text-align: left;
+  }
+  .final .signature { 
+    margin-top: 30px; 
+    font-style: italic; 
+    color: #6d597a; 
+    font-size: 1.2em;
+    text-align: right;
+  }
+
+  /* === ГАЛЕРЕЯ (КРАСИВАЯ СЕТКА) === */
   .gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 25px 0;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    margin: 35px 0;
+    width: 100%;
   }
   .gallery-item {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    background: #fdf6f0;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #fff;
+    padding: 8px 8px 25px 8px; /* Рамка полароида */
+    border-radius: 4px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    cursor: pointer;
+  }
+  /* Чередуем наклоны для фото, чтобы выглядело естественно */
+  .gallery-item:nth-child(odd) { transform: rotate(-1.5deg); }
+  .gallery-item:nth-child(even) { transform: rotate(1.5deg); }
+  .gallery-item:hover {
+    transform: scale(1.08) rotate(0deg) !important;
+    box-shadow: 0 15px 30px rgba(181, 101, 118, 0.3);
+    z-index: 10;
   }
   .gallery img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
+    height: 140px;
+    object-fit: cover; /* В галерее обрезаем, чтобы сетка была ровной */
+    border-radius: 2px;
+    display: block;
+    background: #eee;
   }
 
+  /* === КОНФЕТТИ === */
   #confetti-canvas {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
@@ -145,106 +272,104 @@
     z-index: 999;
   }
 
-  /* ========================================= */
-  /* МОБИЛЬНАЯ ВЕРСИЯ (для экранов до 600px) */
-  /* ========================================= */
+  /* === МОБИЛЬНАЯ ВЕРСИЯ === */
   @media (max-width: 600px) {
-    body {
-      padding: 20px 12px;
-      padding-bottom: calc(20px + env(safe-area-inset-bottom));
-    }
-    h1 {
-      font-size: 1.6em; /* Чуть меньше заголовок */
-    }
-    .subtitle {
-      font-size: 0.95em;
-      margin-bottom: 20px;
-    }
-    .envelopes {
-      gap: 10px; /* Плотнее друг к другу */
-    }
+    body { padding: 20px 12px; }
+    h1 { font-size: 1.7em; }
+    .subtitle { font-size: 1em; margin-bottom: 25px; }
+    
     .envelope {
-      width: 70px; /* Удобный размер для пальца */
-      height: 70px;
-      border-radius: 12px;
+      width: 75px;
+      height: 60px;
     }
-    .envelope .icon {
-      font-size: 2em;
+    .envelope::before {
+      border-left: 37.5px solid transparent;
+      border-right: 37.5px solid transparent;
+      border-top: 30px solid #fcf9f9;
     }
+    .envelope .icon { font-size: 1.5em; margin-top: 10px; }
+    
     .message-box {
       padding: 20px 15px;
-      font-size: 1em; /* Читабельный текст */
-      margin-top: 20px;
-      border-radius: 16px;
+      font-size: 1em;
     }
     .message-box img {
-      margin-top: 15px;
-      max-height: 350px;
+      padding: 8px 8px 30px 8px;
     }
+    
     .final {
-      padding: 25px 15px;
-      margin-top: 25px;
-      border-radius: 20px;
+      padding: 30px 20px;
     }
-    .final h2 {
-      font-size: 1.4em;
-    }
-    .final p {
-      font-size: 0.95em;
-      line-height: 1.6;
-    }
+    .final h2 { font-size: 1.5em; }
+    .final p { font-size: 1em; line-height: 1.7; }
+    
     .gallery {
-      grid-template-columns: repeat(2, 1fr); /* На телефоне 2 колонки */
-      gap: 8px;
-      margin: 20px 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .gallery img {
+      height: 120px;
     }
     .gallery-item {
-      border-radius: 10px;
+      padding: 6px 6px 20px 6px;
     }
   }
 </style>
 </head>
 <body>
 
-<h1>С Днём Рождения, дорогая моя подруга! 🎉</h1>
-<p class="subtitle">Нажми на каждый конвертик 💌</p>
+<!-- Фон с искрами -->
+<div class="sparkles"></div>
 
-<div class="envelopes">
-  <div class="envelope" data-id="0"><div class="icon">💌</div></div>
-  <div class="envelope" data-id="1"><div class="icon">💖</div></div>
-  <div class="envelope" data-id="2"><div class="icon">🎀</div></div>
-  <div class="envelope" data-id="3"><div class="icon">✨</div></div>
-  <div class="envelope" data-id="4"><div class="icon">💍</div></div>
-</div>
+<div class="content">
+  <h1>С Днём Рождения, дорогая моя подруга! 🎉</h1>
+  <p class="subtitle">Нажми на каждый конвертик 💌</p>
 
-<div class="message-box" id="msgBox"></div>
-
-<div class="final" id="finalBox">
-  <h2>Дорогая моя подруга! 💛</h2>
-  
-  <div class="gallery">
-    <div class="gallery-item"><img src="1.JPG" alt="Фото 1"></div>
-    <div class="gallery-item"><img src="2.JPG" alt="Фото 2"></div>
-    <div class="gallery-item"><img src="3.JPG" alt="Фото 3"></div>
-    <div class="gallery-item"><img src="4.HEIC" alt="Фото 4"></div>
-    <div class="gallery-item"><img src="5.JPG" alt="Фото 5"></div>
-    <div class="gallery-item"><img src="6.HEIC" alt="Фото 6"></div>
-    <div class="gallery-item"><img src="7.HEIC" alt="Фото 7"></div>
-    <div class="gallery-item"><img src="8.HEIC" alt="Фото 8"></div>
-    <div class="gallery-item"><img src="9.HEIC" alt="Фото 9"></div>
-    <div class="gallery-item"><img src="10.HEIC" alt="Фото 10"></div>
+  <!-- Конверты -->
+  <div class="envelopes">
+    <div class="envelope" data-id="0"><div class="icon">💌</div></div>
+    <div class="envelope" data-id="1"><div class="icon">💖</div></div>
+    <div class="envelope" data-id="2"><div class="icon">🎀</div></div>
+    <div class="envelope" data-id="3"><div class="icon">✨</div></div>
+    <div class="envelope" data-id="4"><div class="icon">💍</div></div>
   </div>
 
-  <p>От всей души поздравляю тебя С Днём Рождения!</p>
-  <p><strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом (когда закроешь ипотеку, когда Тимур вернётся с вахты, когда рак на горе свистнет) — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.</p>
-  <p>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.</p>
-  <p><strong>Желаю тебе беречь себя</strong> — не только когда трудно, а всегда. Отдыхать без чувства вины, говорить «нет» без объяснений, выбирать себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.</p>
-  <p>Обнимаю тебя крепко,<br>твоя подруженька 💕</p>
+  <!-- Блок для текста -->
+  <div class="message-box" id="msgBox"></div>
+
+  <!-- Финальное поздравление -->
+  <div class="final" id="finalBox">
+    <h2>Сашенька, с днём рождения! 💛</h2>
+    
+    <!-- Галерея -->
+    <div class="gallery">
+      <!-- Если у тебя HEIC, замени название файла на .JPG после конвертации -->
+      <div class="gallery-item"><img src="1.JPG" alt="Фото 1"></div>
+      <div class="gallery-item"><img src="2.JPG" alt="Фото 2"></div>
+      <div class="gallery-item"><img src="3.JPG" alt="Фото 3"></div>
+      <div class="gallery-item"><img src="4.HEIC" alt="Фото 4"></div>
+      <div class="gallery-item"><img src="5.JPG" alt="Фото 5"></div>
+      <div class="gallery-item"><img src="6.HEIC" alt="Фото 6"></div>
+      <div class="gallery-item"><img src="7.HEIC" alt="Фото 7"></div>
+      <div class="gallery-item"><img src="8.HEIC" alt="Фото 8"></div>
+      <div class="gallery-item"><img src="9.HEIC" alt="Фото 9"></div>
+      <div class="gallery-item"><img src="10.HEIC" alt="Фото 10"></div>
+    </div>
+
+    <p>От всей души поздравляю тебя С Днём Рождения!</p>
+    <p><strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом (когда закроешь ипотеку, когда Тимур вернётся с вахты, когда рак на горе свистнет) — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.</p>
+    <p>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.</p>
+    <p><strong>Желаю тебе беречь себя</strong> — не только когда трудно, а всегда. Отдыхать без чувства вины, говорить «нет» без объяснений, выбирать себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.</p>
+    
+    <p class="signature">Обнимаю тебя крепко,<br>твоя подруженька 💕</p>
+  </div>
 </div>
 
+<!-- Канвас для конфетти -->
 <canvas id="confetti-canvas"></canvas>
 
 <script>
+// ТЕКСТЫ ДЛЯ КОНВЕРТОВ
 const messages = [
   "💌 <strong>Желаю тебе в этом году</strong>, чтобы ты была счастлива каждый день и не откладывала жизнь на потом — счастье в мелочах, в обычных днях, в чашке любимого чая, просмотре сериала, в прогулке по осеннему парку, в кружочках от близких, в утренних ритуалах и в душевных разговорах.<br><br>Пусть здоровье не подводит, а лечение силой мысли всегда работает, пусть мечты не тускнеют и всегда находятся силы на то, что важно именно тебе, а близкие будут рядом, когда это необходимо.<br><br><strong>Береги себя</strong> — не только когда трудно, а всегда. Отдыхай без чувства вины, говори «нет» без объяснений, выбирай себя без оправданий. Ты заслуживаешь самого лучшего — помни об этом не только по праздникам.<img src='1.JPG' alt='Фото'>",
 
@@ -270,11 +395,12 @@ envelopes.forEach(env => {
     msgBox.innerHTML = messages[id];
     msgBox.classList.add('show');
     
-    // Плавный скролл к тексту с небольшой задержкой (для мобилок)
+    // Плавный скролл
     setTimeout(() => {
       msgBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
 
+    // Если открыты все конверты
     if (opened.size === envelopes.length) {
       setTimeout(() => {
         finalBox.classList.add('show');
@@ -282,12 +408,12 @@ envelopes.forEach(env => {
           finalBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
         startConfetti();
-      }, 600);
+      }, 800); // Задержка, чтобы она успела прочитать последний конверт
     }
   });
 });
 
-// Конфетти 🎊
+// === КОНФЕТТИ ===
 const canvas = document.getElementById('confetti-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -303,17 +429,19 @@ window.addEventListener('resize', resize);
 function startConfetti() {
   if (animating) return;
   animating = true;
-  const colors = ['#b56576', '#e88d9a', '#f6c1cb', '#e0b1b8', '#d8a7b1', '#f4d3d9', '#c9b6d8'];
+  // Красивая палитра: розовый, золотой, белый, фиолетовый
+  const colors = ['#b56576', '#f6c1cb', '#ffd700', '#ffffff', '#c9b6d8', '#e88d9a'];
+  
   particles = [];
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 250; i++) {
     particles.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height - canvas.height,
-      w: 6 + Math.random() * 6,
-      h: 8 + Math.random() * 8,
+      w: 5 + Math.random() * 8,
+      h: 10 + Math.random() * 10,
       color: colors[Math.floor(Math.random() * colors.length)],
-      vy: 2 + Math.random() * 4,
-      vx: -1.5 + Math.random() * 3,
+      vy: 2 + Math.random() * 5,
+      vx: -2 + Math.random() * 4,
       rot: Math.random() * Math.PI,
       vr: (-0.1 + Math.random() * 0.2),
       life: 0
@@ -325,19 +453,34 @@ function startConfetti() {
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   let alive = false;
+  
   particles.forEach(p => {
     p.y += p.vy;
     p.x += p.vx;
     p.rot += p.vr;
     p.life++;
-    if (p.y < canvas.height + 30) alive = true;
+    
+    // Немного замедляем падение для красоты
+    p.vy += 0.02; 
+    
+    if (p.y < canvas.height + 50) alive = true;
+    
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(p.rot);
     ctx.fillStyle = p.color;
-    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    
+    // Рисуем конфетти разной формы
+    if (p.life % 2 === 0) {
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    } else {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.w/2, 0, Math.PI * 2);
+      ctx.fill();
+    }
     ctx.restore();
   });
+  
   if (alive) {
     requestAnimationFrame(animate);
   } else {
